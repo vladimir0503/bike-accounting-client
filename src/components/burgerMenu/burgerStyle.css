@@ -1,0 +1,23 @@
+.burderOn {
+    width: 200px;
+    height: 400px;
+    background-color: grey;
+    border-radius: 14px;
+    transition: 0.5s;
+    position: relative;
+    z-index: 10;
+    opacity: 50%;
+    transform: translateX(-0%)
+}
+
+.burderOff {
+    width: 200px;
+    height: 400px;
+    background-color: grey;
+    border-radius: 14px;
+    transition: 0.5s;
+    position: relative;
+    z-index: 10;
+    opacity: 50%;
+    transform: translateX(-100%)
+}
