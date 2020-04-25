@@ -1,13 +1,15 @@
 import React from 'react'
 import styled from 'styled-components';
 import homeImg from '../images/home.jpg';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import Registration from '../pages/Registration'
 
 const Header = styled.div`
     width: 100vw;
     height: 60px;
     background-color: black;
-    position: relative;
-    z-index: 100;
+    position: absolute;
+    z-index: 1000;
 `;
 
 const HeaderContent = styled.div`
@@ -22,6 +24,12 @@ const Label = styled.h1`
     margin: 0;
     position: relative;
     bottom: 5px;
+    cursor: pointer;
+    transition: 0.5s;
+
+    :hover {
+        color: #E3B873;
+    }
 `;
 
 const MenuButton = styled.button`
@@ -34,6 +42,7 @@ const MenuButton = styled.button`
     padding: 12px;
     background: none;
     outline: none;
+    cursor: pointer;
 
     span {
         transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
@@ -52,41 +61,6 @@ const MenuButton = styled.button`
         background-color: #E3B873;
         }
     }
-
-    &.active {
-        span:nth-of-type(1) {
-        transform: rotate(45deg) translate(10px, 10px);
-        width: 40px;
-        }
-
-        span:nth-of-type(2) {
-        opacity: 0;
-        pointer-events: none;
-        }
-
-        span:nth-of-type(3) {
-        transform: rotate(-45deg) translate(7px, -7px);
-        width: 40px;
-        }
-    }
-`;
-
-const Menu = styled.div`
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    bottom: 0px;
-    z-index: 50;
-    display: block;
-    width: 400px;
-    max-width: 100%;
-    margin-top: 0px;
-    padding-top: 100px;
-    padding-right: 0px;
-    align-items: stretch;
-    background-color: #E3B873;
-    opacity: 50%;
-    transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
 `;
 
 const Bar = styled.span`
@@ -97,10 +71,49 @@ const Bar = styled.span`
     background-color: #fff;
 `;
 
+const Menu = styled.div`
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    z-index: 200;
+    display: block;
+    width: 400px;
+    max-width: 100%;
+    margin-top: 0px;
+    padding-top: 100px;
+    padding-right: 0px;
+    align-items: stretch;
+    background-color: black;
+    transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+`;
+
+const NavBar = styled.ul`
+    margin-left: 10px;
+    padding-left: 0;
+    font-size: 33px;
+`;
+
+const NavBarElem = styled.li`
+    list-style-type: none;
+    margin-bottom: 39px;
+    color: white;
+    transition: 0.5s;
+
+    :a {
+        color: 'inherit';
+        text-decoration: 'none'
+    }
+    
+    :hover {
+        color: #E3B873;
+    }
+`;
+
 const ContentContayner = styled.div`
     background-image: url(${homeImg});
     width: 100vw;
-    height: 678px;
+    height: 100vh;
     background-size: cover;
 
     ::after {
@@ -135,8 +148,25 @@ class Home extends React.Component {
             transformBar1: null,
             opacityBar2: null,
             transformBar3: null,
-            barColor: null
+            barColor: null,
+            wrapper: null,
+            disableBtn: null,
+            clickCountInit: false
         }
+
+        this.handleClickOutside = this.handleClickOutside.bind(this);
+    }
+
+    componentDidMount() {
+        document.addEventListener('mousedown', this.handleClickOutside);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('mousedown', this.handleClickOutside);
+    }
+
+    setWrapperRef(node) {
+        this.wrapperRef = node;
     }
 
     handleClickMenu() {
@@ -145,10 +175,12 @@ class Home extends React.Component {
             this.setState({
                 menuPosition: '0%',
                 menuInit: true,
+                clickOutsideInit: false,
                 transformBar1: 'rotate(45deg) translate(10px, 10px)',
                 transformBar3: 'rotate(-45deg) translate(7px, -7px)',
                 opacityBar2: 0,
-                barColor: '#E3B873'
+                barColor: '#E3B873',
+                wrapper: this.setWrapperRef = this.setWrapperRef.bind(this),
             });
         } else {
             this.setState({
@@ -157,40 +189,89 @@ class Home extends React.Component {
                 transformBar1: null,
                 transformBar3: null,
                 opacityBar2: null,
-                barColor: null
+                barColor: null,
+                wrapper: null,
             })
         }
 
     }
 
+    hideMenu() {
+        this.setState({
+            menuPosition: '-100%',
+            transformBar1: null,
+            transformBar3: null,
+            opacityBar2: null,
+            barColor: null,
+            wrapper: null,
+        })
+    }
+
+    handleClickOutside(event) {
+
+        if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
+            this.handleClickMenu();
+            this.setState({
+                menuInit: true,
+                clickCountInit: true
+            })
+        }
+        console.log(this.state.menuInit);
+    }
+
+    menuInitFalse() {
+        this.setState({ menuInit: false })
+    }
+
+    menuInitTrue() {
+        this.setState({ menuInit: true })
+    }
+
+    toHome() {
+        window.history.back();
+    }
+
     render() {
 
+        const RegistPage = () => <Registration />
+
         return (
-            <>
+            <Router>
                 <Header>
                     <HeaderContent>
-                        <MenuButton onClick={this.handleClickMenu.bind(this)}>
-                            <Bar  style={{ transform: this.state.transformBar1, backgroundColor: this.state.barColor }}/>
-                            <Bar style={{ opacity: this.state.opacityBar2, backgroundColor: this.state.barColor }}/>
-                            <Bar style={{ transform: this.state.transformBar3, backgroundColor: this.state.barColor }}/>
+                        <MenuButton onClick={this.handleClickMenu.bind(this)} onMouseOver={this.menuInitFalse.bind(this)}>
+                            <Bar style={{ transform: this.state.transformBar1, backgroundColor: this.state.barColor }} />
+                            <Bar style={{ opacity: this.state.opacityBar2, backgroundColor: this.state.barColor }} />
+                            <Bar style={{ transform: this.state.transformBar3, backgroundColor: this.state.barColor }} />
                         </MenuButton>
-                        <Label>BIKE RENTAL</Label>
+                        <Label onClick={this.toHome.bind(this)}>BIKE RENTAL</Label>
                     </HeaderContent>
                 </Header>
-                <ContentContayner>
+                <Route path='/registration' component={RegistPage} />
+                <ContentContayner onMouseOver={this.menuInitTrue.bind(this)}>
                     <ContentDiv>
                         <div style={{ width: '699px' }}>
                             <h2 style={{ margin: '0px' }}><span style={{ color: '#E3B873' }}>
-                                Приветствую, дорогой посетитель!</span></h2>
-                            <p>Вы находидеть на странице сервиса по учету украденных велосипедов.</p>
-                            <p>К огромному сожалению, участились случаи краж нашего имущества. По этому наша компания
+                                Добро пожаловать!</span></h2>
+                            <p>Вы находитесь на странице сервиса по учету украденных велосипедов.</p>
+                            <p>К огромному сожалению, участились случаи краж нашего имущества. По-этому наша компания
                             запустила систему учета краж наших велосипедов. Если у Вас есть что сообщить, пожалуйста
-                            воспользуйтесь выпадающем меню в правой части страницы.</p>
+                            кликните на кнопку меню в левой части страницы.</p>
                         </div>
                     </ContentDiv>
-                    <Menu style={{ transform: `translateX(${this.state.menuPosition})` }}/>
+                    <div ref={this.state.wrapper}>
+                        <Menu style={{ transform: `translateX(${this.state.menuPosition})` }}>
+                            <NavBar>
+                                <NavBarElem onClick={this.toHome.bind(this)}>Главная</NavBarElem>
+                                <NavBarElem disabled={true}><Link to='/registration' style={{ color: 'inherit', textDecoration: 'none' }}>Регистрация</Link></NavBarElem>
+                                <NavBarElem>Авторизация</NavBarElem>
+                                <NavBarElem>Сообщить о краже</NavBarElem>
+                                <NavBarElem>Украденные велосипеды</NavBarElem>
+                            </NavBar>
+                        </Menu>
+                    </div>
                 </ContentContayner>
-            </>
+            </Router>
         )
     }
 }
