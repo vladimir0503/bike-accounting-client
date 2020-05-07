@@ -5,6 +5,8 @@ import Home from './Home'
 import Registration from './Registration';
 import Autorization from './Autorization';
 import ReportTheft from './ReportTheft';
+import Employees from './Employees';
+import StolenBikes from './StolenBikes';
 
 const Header = styled.div`
     width: 100vw;
@@ -152,11 +154,15 @@ class Main extends React.Component {
             clickCountInit: false,
             submenuPosition: '-100%',
             submenuinit: false,
-            linkColor: 'white'
+            linkColor: 'white',
+            hideExit: localStorage.getItem('hideExit'),
+            hideEnter: localStorage.getItem('hideEnter'),
+            user: localStorage.getItem('user'),
         }
 
         this.handleClickMenu = this.handleClickMenu.bind(this);
         this.OnSubMenu = this.OnSubMenu.bind(this);
+        this.styleEnterBtn = this.styleEnterBtn.bind(this);
     }
 
     handleClickMenu() {
@@ -179,6 +185,8 @@ class Main extends React.Component {
                 transformBar3: null,
                 opacityBar2: null,
                 barColor: null,
+                submenuPosition: '-100%',
+                submenuinit: false
             })
         }
 
@@ -218,12 +226,38 @@ class Main extends React.Component {
         }
     }
 
+    loginOut() {
+        localStorage.removeItem('myToken');
+        this.styleEnterBtn();
+    }
+
+    styleEnterBtn() {
+        let token = localStorage.getItem('myToken');
+        if(token === null) {
+            localStorage.removeItem('user');
+            localStorage.removeItem('hideEnter');
+            localStorage.setItem('hideExit', 'none');
+        } else {
+            localStorage.removeItem('hideExit');
+            localStorage.setItem('hideEnter', 'none');
+        }
+        window.location.reload();
+    }
+
+    testToken() {
+        console.log('hideEnter', this.state.hideEnter);
+        console.log('hideExit', this.state.hideExit);
+        console.log(localStorage.getItem('myToken'));
+    }
+
     render() {
 
-        const HomePages = () => <Home />;
+        const HomePages = () => <Home user={this.state.user}/>;
         const RegistPage = () => <Registration />;
-        const AutorPage = () => <Autorization />;
+        const AutorPage = () => <Autorization styleEnterBtn={this.styleEnterBtn}/>;
         const ReportTheftPage = () => <ReportTheft />;
+        const EmployessPage = () => <Employees />;
+        const StolenPage = () => <StolenBikes />;
 
         return (
             <Router>
@@ -231,6 +265,8 @@ class Main extends React.Component {
                 <Route path='/registration' component={RegistPage} />
                 <Route path='/autorization' component={AutorPage} />
                 <Route path='/reportTheft' component={ReportTheftPage} />
+                <Route path='/employess' component={EmployessPage} />
+                <Route path='/stolenBikes' component={StolenPage} />
                 <Header>
                     <HeaderContent>
                         <LabelDiv>
@@ -242,7 +278,8 @@ class Main extends React.Component {
                             <Link to='/' style={{ color: 'inherit', textDecoration: 'none' }}><Label>BIKE RENTAL</Label></Link>
                         </LabelDiv>
                         <LinkDiv>
-                            <NavBarElem><Link to='/autorization' style={{ color: 'inherit', textDecoration: 'none' }}>Войти</Link></NavBarElem>
+                            <NavBarElem style={{display: this.state.hideEnter }}><Link to='/autorization' style={{ color: 'inherit', textDecoration: 'none' }}>Войти</Link></NavBarElem>
+                            <NavBarElem style={{display: this.state.hideExit }} onClick={this.loginOut.bind(this)}>Выйти</NavBarElem>
                             <NavBarElem><Link to='/registration' style={{ color: 'inherit', textDecoration: 'none' }}>Зарегистрироваться</Link></NavBarElem>
                         </LinkDiv>
                     </HeaderContent>
@@ -252,15 +289,18 @@ class Main extends React.Component {
                         <NavBarElem onClick={this.handleClickMenu.bind(this)}><Link to='/' style={{ color: 'inherit', textDecoration: 'none' }}>Главная</Link></NavBarElem>
                         <NavBarElem onClick={this.OnSubMenu.bind(this)}>Админка</NavBarElem>
                         <NavBarElem onClick={this.handleClickMenu.bind(this)}><Link to='/reportTheft' style={{ color: 'inherit', textDecoration: 'none' }}>Сообщить о краже</Link></NavBarElem>
+                        {/* <button onClick={this.testToken.bind(this)}>TEST TOKEN</button>
+                        <button onClick={this.loginOut.bind(this)}>Выйти</button> */}
+
                     </NavBar>
                 </Menu>
                 <SubMenu style={{ transform: `translateX(${this.state.submenuPosition})` }}>
                     <NavBar style={{ fontSize: '20px' }}>
-                        <NavBarElem onClick={this.OnSubMenu.bind(this)}><Link to='/autorization' style={{ color: 'inherit', textDecoration: 'none' }}>Авторизация</Link></NavBarElem>
+                        {/* <NavBarElem onClick={this.OnSubMenu.bind(this)}><Link to='/autorization' style={{ color: 'inherit', textDecoration: 'none' }}>Авторизация</Link></NavBarElem> */}
                         <NavBarElem onClick={this.OnSubMenu.bind(this)}><Link to='/registration' style={{ color: 'inherit', textDecoration: 'none' }}>Регистрация</Link></NavBarElem>
-                        <NavBarElem>Украденные велосипеды</NavBarElem>
+                        <NavBarElem onClick={this.OnSubMenu.bind(this)}><Link to='/stolenBikes' style={{ color: 'inherit', textDecoration: 'none' }}>Украденные велосипеды</Link></NavBarElem>
                         <NavBarElem>Новый случай</NavBarElem>
-                        <NavBarElem>Ответственные сотрудники</NavBarElem>
+                        <NavBarElem onClick={this.OnSubMenu.bind(this)}><Link to='/employess' style={{ color: 'inherit', textDecoration: 'none' }}>Ответственные сотрудники</Link></NavBarElem>
                     </NavBar>
                 </SubMenu>
             </Router>

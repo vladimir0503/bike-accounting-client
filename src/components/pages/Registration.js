@@ -1,7 +1,6 @@
 import React from 'react';
 import RegImg from '../images/RegImg.jpg';
 import styled from 'styled-components';
-
 import axios from 'axios';
 
 // Мой ID d817345b-a4aa-4372-b935-79d3de6b22cc
@@ -29,18 +28,18 @@ const Form = styled.div`
     margin: 0 auto;
     margin-top: 139px;
     width: 334px;
-    height: 467px;
-    background: rgba(0, 0, 0, 0.46);
+    height: 478px;
+    background: rgba(0,0,0,0.46);
     position: relative;
     z-index: 151;
-    color: white
+    color: white;
 `;
 
-const FormContayner = styled.form`
+const FormContent = styled.form`
     display: flex;
     flex-direction: column;
     width: 200px;
-    height: 445px;
+    height: 500px;
     margin: 0 auto;
 `;
 
@@ -54,9 +53,25 @@ const Input = styled.input`
     margin-bottom: 31px;
 `;
 
+// const CheckboxContayner = styled.div`
+//     display: flex;
+//     margin-bottom: 38px;
+// `;
+
+// const Checkbox = styled.input`
+//     margin-right: 15px;
+//     margin-left: 0px;
+// `;
+
+// const Label = styled.label`
+//     color: gray;
+//     font-size: 15px;
+//     margin-top: -2px;
+// `;
+
 const SendBtn = styled.button`
     cursor: pointer;
-    background: #E3B873;
+    background: #fff0;
     color: white;
     border-radius: 2px;
     width: 161px;
@@ -65,6 +80,26 @@ const SendBtn = styled.button`
     position: relative;
     bottom: 2px;
     border: 0;
+    border: 1px solid #FFFFFF;
+    transition: 0.5s;
+    :hover{
+        background: #E3B873;
+    }
+`;
+
+const Info = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 334px;
+    height: 38px;
+    margin: 0 auto;
+    margin-top: -536px;
+    background: rgba(0,0,0,0.46);
+    color: white;
+    z-index: 151;
+    cursor: pointer;
 `;
 
 class Registration extends React.Component {
@@ -76,29 +111,76 @@ class Registration extends React.Component {
             lastName: '',
             password: '',
             repassword: '',
-            clientId: ''
+            clientId: '',
+            approved: false,
+            info: null
         }
+
     }
 
-    handleChange = (event) => {
-        const name = event.target.name;
-        const value = event.target.value;
+    hideInfo() {
+        this.setState({ info: null });
+    }
+
+    handleChange = (e) => {
+        const name = e.target.name;
+        const value = e.target.name === 'approved' ? e.target.checked : e.target.value;
         this.setState({ [name]: value });
     }
 
-    handleSubmit = (event) => {
-        event.preventDefault();
+    handleSubmit = (e) => {
+        e.preventDefault();
+
+        const formData = [
+            this.state.email,
+            this.state.firstName,
+            this.state.lastName,
+            this.state.password,
+            this.state.repassword,
+            this.state.clientId
+        ];
+
+        for (let i = 0; i < formData.length; i++) {
+            if (formData[i] === '') {
+                this.setState({
+                    info: <Info onClick={this.hideInfo.bind(this)}>
+                        <p>Заполненны не все поля!</p>
+                    </Info>
+                })
+                return;
+            }
+        }
+
+        const user = {
+            email: this.state.email,
+            firstName: this.state.firstName,
+            lastName: this.state.lastName,
+            password: this.state.password,
+            repassword: this.state.repassword,
+            clientId: this.state.clientId,
+            approved: this.state.approved
+        }
+
         axios.post('http://84.201.129.203:8888/api/auth/sign_up', {
             email: this.state.email,
             firstName: this.state.firstName,
             lastName: this.state.lastName,
             password: this.state.password,
             repassword: this.state.repassword,
-            clientId: this.state.clientId
+            clientId: this.state.clientId,
+            approved: this.state.approved
         })
             .then(res => {
+                window.location.reload();
                 console.log(res);
+                this.setState({
+                    info: <Info onClick={this.hideInfo.bind(this)}>
+                        <p>Регистрация прошла успешно.</p>
+                    </Info>
+                })
             })
+
+        console.log(user);
     }
 
     render() {
@@ -106,7 +188,7 @@ class Registration extends React.Component {
         return (
             <ContentConteyner>
                 <Form>
-                    <FormContayner onSubmit={this.handleSubmit}>
+                    <FormContent onSubmit={this.handleSubmit}>
                         <h2 style={{ marginLeft: '22px' }}>Регистрация:</h2>
                         <Input type='text' name='firstName' placeholder='Имя:' value={this.state.firstName} onChange={this.handleChange} />
                         <Input type='text' name='lastName' placeholder='Фамилия:' value={this.state.lastName} onChange={this.handleChange} />
@@ -114,9 +196,14 @@ class Registration extends React.Component {
                         <Input type='password' name='repassword' placeholder='Повторите пароль:' value={this.state.repassword} onChange={this.handleChange} />
                         <Input type='text' name='email' placeholder='E-mail:' value={this.state.email} onChange={this.handleChange} />
                         <Input type='text' name='clientId' placeholder='ID клиента' value={this.state.clientId} onChange={this.handleChange} />
+                        {/* <CheckboxContayner>
+                            <Checkbox type='checkbox' name='approved' checked={this.state.approved} onChange={this.handleChange} />
+                            <Label>Одобренный сотрудник</Label>
+                        </CheckboxContayner> */}
                         <SendBtn type='submit'>Зарегистрироваться</SendBtn>
-                    </FormContayner>
+                    </FormContent>
                 </Form>
+                {this.state.info}
             </ContentConteyner>
         )
     }
