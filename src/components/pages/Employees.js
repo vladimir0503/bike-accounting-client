@@ -134,12 +134,11 @@ class Employees extends React.Component {
             headers: {
                 'Authorization': `Bearer ${token}`
             },
-            approved: this.state.toApprove
+            'approved': this.state.toApprove
         })
             .then(res => {
                 console.log(res);
             });
-        console.log(id);
     }
 
     render() {
