@@ -3,6 +3,9 @@ import styled from 'styled-components';
 import theftImg from '../images/theftImg.jpg';
 import axios from 'axios';
 
+const token = localStorage.getItem('myToken');
+const headers = { 'Authorization': `Bearer ${token}` };
+
 const ContentContayner = styled.div`
     background-image: url(${theftImg});
     width: 100vw;
@@ -94,18 +97,47 @@ const Info = styled.div`
     cursor: pointer;
 `;
 
+const ErrorInfo = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    bottom: -99px;
+    width: 334px;
+    height: 38px;
+    margin: 0 auto;
+    background: rgba(0,0,0,0.46);
+    color: white;
+    z-index: 151;
+    cursor: pointer;
+`;
 
-class ReportTheft extends React.Component {
+class NewCase extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            date: '',
-            licenseNumber: '',
-            color: '',
-            ownerFullName: '',
-            clientId: '',
-            info: null
-        };
+            info: null,
+            errorInfo: null,
+            styleForm: null
+        }
+    }
+
+    componentDidMount() {
+        axios.get('http://84.201.129.203:8888/api/cases', {
+            headers: headers
+        })
+            .then(res => {
+                console.log(res);
+            })
+            .catch(err => {
+                console.log(err);
+                this.setState({
+                    info: <ErrorInfo onClick={this.hideInfo.bind(this)}>
+                        <p>Вы не вошли в систему!</p>
+                    </ErrorInfo>,
+                    styleForm: 'none'
+                })
+            })
     }
 
     hideInfo() {
@@ -140,19 +172,28 @@ class ReportTheft extends React.Component {
             }
         }
 
-        axios.post('http://84.201.129.203:8888/api/public/report', {
+        const data = {
             date: this.state.date,
             licenseNumber: this.state.licenseNumber,
             color: this.state.color,
             ownerFullName: this.state.ownerFullName,
             clientId: this.state.clientId
+        };
+
+        axios.post('http://84.201.129.203:8888/api/cases', data, {
+            headers: headers
         })
             .then(res => {
                 console.log(res);
                 this.setState({
                     info: <Info onClick={this.hideInfo.bind(this)}>
                         <p>Сообщение отправленно.</p>
-                    </Info>
+                    </Info>,
+                    date: '',
+                    licenseNumber: '',
+                    color: '',
+                    ownerFullName: '',
+                    clientId: ''
                 })
             })
     }
@@ -160,9 +201,10 @@ class ReportTheft extends React.Component {
     render() {
         return (
             <ContentContayner>
-                <Form>
+                {this.state.errorInfo}
+                <Form style={{ display: this.state.styleForm }}>
                     <FormContent onSubmit={this.handleSubmit}>
-                        <h2 style={{ marginLeft: '22px' }}>Сообщить о краже:</h2>
+                        <h2 style={{ marginLeft: '22px' }}>Новый случай:</h2>
                         <DateContayner>
                             <Label>Дата:</Label>
                             <Input type='date' name='date' value={this.state.date} onChange={this.handleChange} />
@@ -180,4 +222,4 @@ class ReportTheft extends React.Component {
     }
 }
 
-export default ReportTheft
+export default NewCase

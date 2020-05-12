@@ -7,6 +7,7 @@ import Autorization from './Autorization';
 import ReportTheft from './ReportTheft';
 import Employees from './Employees';
 import StolenBikes from './StolenBikes';
+import NewCase from './NewCase'
 
 const Header = styled.div`
     width: 100vw;
@@ -258,6 +259,7 @@ class Main extends React.Component {
         const ReportTheftPage = () => <ReportTheft />;
         const EmployessPage = () => <Employees />;
         const StolenPage = () => <StolenBikes />;
+        const NewCasePage = () => <NewCase />;
 
         return (
             <Router>
@@ -267,6 +269,7 @@ class Main extends React.Component {
                 <Route path='/reportTheft' component={ReportTheftPage} />
                 <Route path='/employess' component={EmployessPage} />
                 <Route path='/stolenBikes' component={StolenPage} />
+                <Route path='/newCase' component={NewCasePage} />
                 <Header>
                     <HeaderContent>
                         <LabelDiv>
@@ -289,17 +292,13 @@ class Main extends React.Component {
                         <NavBarElem onClick={this.handleClickMenu.bind(this)}><Link to='/' style={{ color: 'inherit', textDecoration: 'none' }}>Главная</Link></NavBarElem>
                         <NavBarElem onClick={this.OnSubMenu.bind(this)}>Админка</NavBarElem>
                         <NavBarElem onClick={this.handleClickMenu.bind(this)}><Link to='/reportTheft' style={{ color: 'inherit', textDecoration: 'none' }}>Сообщить о краже</Link></NavBarElem>
-                        {/* <button onClick={this.testToken.bind(this)}>TEST TOKEN</button>
-                        <button onClick={this.loginOut.bind(this)}>Выйти</button> */}
-
                     </NavBar>
                 </Menu>
                 <SubMenu style={{ transform: `translateX(${this.state.submenuPosition})` }}>
                     <NavBar style={{ fontSize: '20px' }}>
-                        {/* <NavBarElem onClick={this.OnSubMenu.bind(this)}><Link to='/autorization' style={{ color: 'inherit', textDecoration: 'none' }}>Авторизация</Link></NavBarElem> */}
                         <NavBarElem onClick={this.OnSubMenu.bind(this)}><Link to='/registration' style={{ color: 'inherit', textDecoration: 'none' }}>Регистрация</Link></NavBarElem>
+                        <NavBarElem onClick={this.OnSubMenu.bind(this)}><Link to='/newCase' style={{ color: 'inherit', textDecoration: 'none' }}>Новый случай</Link></NavBarElem>
                         <NavBarElem onClick={this.OnSubMenu.bind(this)}><Link to='/stolenBikes' style={{ color: 'inherit', textDecoration: 'none' }}>Украденные велосипеды</Link></NavBarElem>
-                        <NavBarElem>Новый случай</NavBarElem>
                         <NavBarElem onClick={this.OnSubMenu.bind(this)}><Link to='/employess' style={{ color: 'inherit', textDecoration: 'none' }}>Ответственные сотрудники</Link></NavBarElem>
                     </NavBar>
                 </SubMenu>

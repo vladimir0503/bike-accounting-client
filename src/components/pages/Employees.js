@@ -2,8 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import employess from '../images/employess.jpg';
 import axios from 'axios';
+import EmployeePage from './EmployeePage';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
-let token = localStorage.getItem('myToken');
+const token = localStorage.getItem('myToken');
+const headers = { 'Authorization': `Bearer ${token}` };
 
 const ContentContayner = styled.div`
     background-image: url(${employess});
@@ -28,20 +31,25 @@ const UserList = styled.div`
     margin: 0 auto;
     margin-top: 139px;
     width: 797px;
+    max-height: 547px;
     background: rgba(0,0,0,0.46);
     position: relative;
     z-index: 151;
     color: white;
     padding: 1px;
+    overflow: auto;
 `;
 
-const Li = styled.li`
+const User = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 5px;
+    margin: 0 auto;
+    margin-bottom: 15px;
+    margin-top: 8px;
     max-width: 705px;
     border: 1px solid #FFFFFF;
-    padding: 5px;
 `;
 
 const Hover = styled.h2`
@@ -79,6 +87,16 @@ const Btn = styled.button`
     }
 `;
 
+const ListElem = styled.li`
+    list-style-type: none;
+    color: white;
+    transition: 0.5s;
+    cursor: pointer;
+    :hover {
+        color: #E3B873;
+    }
+`;
+
 class Employees extends React.Component {
     constructor(props) {
         super(props);
@@ -86,8 +104,12 @@ class Employees extends React.Component {
             employess: [],
             info: null,
             listStyle: null,
-            toApprove: true
+            toApprove: true,
+            approved: null,
+            userId: null
         }
+
+        this.updateUserList = this.updateUserList.bind(this);
     }
 
     hideInfo() {
@@ -96,14 +118,12 @@ class Employees extends React.Component {
 
     componentDidMount() {
         axios.get('http://84.201.129.203:8888/api/officers', {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
+            headers: headers
         })
             .then(res => {
                 const employess = res.data;
-                this.setState({ employess })
-                console.log(employess)
+                this.setState({ employess });
+                console.log(employess);
             })
             .catch(err => {
                 console.log(err);
@@ -118,9 +138,7 @@ class Employees extends React.Component {
 
     userDelete(id, index) {
         axios.delete(`http://84.201.129.203:8888/api/officers/${id}`, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
+            headers: headers
         })
             .then(res => {
                 console.log(res);
@@ -130,31 +148,56 @@ class Employees extends React.Component {
     }
 
     userApprove(id) {
-        axios.put(`http://84.201.129.203:8888/api/officers/${id}`, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            },
-            'approved': this.state.toApprove
+
+        const data = { approved: this.state.toApprove }
+
+        axios.put(`http://84.201.129.203:8888/api/officers/${id}`, data, {
+            headers: headers
+        })
+        .then(res => {
+            console.log(res);
+            this.updateUserList();
+        });
+
+    }
+
+    updateUserList() {
+        axios.get('http://84.201.129.203:8888/api/officers', {
+            headers: headers
         })
             .then(res => {
-                console.log(res);
-            });
+                const employess = res.data;
+                this.setState({ employess });
+                console.log(employess);
+            })
+    }
+
+    getUserId(id) {
+        this.setState({ userId: id })
+        console.log(this.state.userId)
     }
 
     render() {
 
+        const Employee = () => <EmployeePage userId={this.state.userId}
+            updateUserList={this.updateUserList}
+        />
 
         return (
-            <ContentContayner>
-                {this.state.info}
-                <UserList style={{ display: this.state.listStyle }}>
-                    <Hover>Ответственные сотрудники:</Hover>
-                    {this.state.employess.map((data, index) => <ul><Li>{data.firstName} {data.lastName}
-                        {data.approved ? ' (одобрен)' : ' (не одобрен)'}
-                        {data.approved ? null : <Btn onClick={this.userApprove.bind(this, data._id)}>Одобрить</Btn>}
-                        <Btn onClick={this.userDelete.bind(this, data._id, index)}>Удалить сотрудника</Btn></Li></ul>)}
-                </UserList>
-            </ContentContayner>
+            <Router>
+                <Route path='/employeePage'
+                    component={Employee} />
+                <ContentContayner>
+                    {this.state.info}
+                    <UserList style={{ display: this.state.listStyle }}>
+                        <Hover>Ответственные сотрудники:</Hover>
+                        {this.state.employess.map((data, index) => <User><Link style={{ color: 'inherit', textDecoration: 'none' }} onClick={this.getUserId.bind(this, data._id)}
+                            to='/employeePage'><ListElem>{data.firstName} {data.lastName} {data.approved ? ' (одобрен)' : ' (не одобрен)'}</ListElem></Link>
+                            {data.approved ? null : <Btn onClick={this.userApprove.bind(this, data._id)}>Одобрить</Btn>}
+                            <Btn onClick={this.userDelete.bind(this, data._id, index)}>Удалить сотрудника</Btn></User>)}
+                    </UserList>
+                </ContentContayner>
+            </Router>
         )
     }
 }
