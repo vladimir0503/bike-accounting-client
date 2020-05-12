@@ -7,7 +7,8 @@ import Autorization from './Autorization';
 import ReportTheft from './ReportTheft';
 import Employees from './Employees';
 import StolenBikes from './StolenBikes';
-import NewCase from './NewCase'
+import NewCase from './NewCase';
+import CreateUser from './CreateUser'
 
 const Header = styled.div`
     width: 100vw;
@@ -260,6 +261,7 @@ class Main extends React.Component {
         const EmployessPage = () => <Employees />;
         const StolenPage = () => <StolenBikes />;
         const NewCasePage = () => <NewCase />;
+        const CreateUserPage = () => <CreateUser />;
 
         return (
             <Router>
@@ -270,6 +272,7 @@ class Main extends React.Component {
                 <Route path='/employess' component={EmployessPage} />
                 <Route path='/stolenBikes' component={StolenPage} />
                 <Route path='/newCase' component={NewCasePage} />
+                <Route path='/createUser' component={CreateUserPage} />
                 <Header>
                     <HeaderContent>
                         <LabelDiv>
@@ -296,7 +299,7 @@ class Main extends React.Component {
                 </Menu>
                 <SubMenu style={{ transform: `translateX(${this.state.submenuPosition})` }}>
                     <NavBar style={{ fontSize: '20px' }}>
-                        <NavBarElem onClick={this.OnSubMenu.bind(this)}><Link to='/registration' style={{ color: 'inherit', textDecoration: 'none' }}>Регистрация</Link></NavBarElem>
+                        <NavBarElem onClick={this.OnSubMenu.bind(this)}><Link to='/createUser' style={{ color: 'inherit', textDecoration: 'none' }}>Добавить сотрудника</Link></NavBarElem>
                         <NavBarElem onClick={this.OnSubMenu.bind(this)}><Link to='/newCase' style={{ color: 'inherit', textDecoration: 'none' }}>Новый случай</Link></NavBarElem>
                         <NavBarElem onClick={this.OnSubMenu.bind(this)}><Link to='/stolenBikes' style={{ color: 'inherit', textDecoration: 'none' }}>Украденные велосипеды</Link></NavBarElem>
                         <NavBarElem onClick={this.OnSubMenu.bind(this)}><Link to='/employess' style={{ color: 'inherit', textDecoration: 'none' }}>Ответственные сотрудники</Link></NavBarElem>

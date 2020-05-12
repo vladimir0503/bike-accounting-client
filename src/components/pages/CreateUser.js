@@ -3,7 +3,8 @@ import RegImg from '../images/RegImg.jpg';
 import styled from 'styled-components';
 import axios from 'axios';
 
-// Мой ID d817345b-a4aa-4372-b935-79d3de6b22cc
+const token = localStorage.getItem('myToken');
+const headers = { 'Authorization': `Bearer ${token}` };
 
 const ContentConteyner = styled.div`
     background-image: url(${RegImg});
@@ -86,7 +87,22 @@ const Info = styled.div`
     cursor: pointer;
 `;
 
-class Registration extends React.Component {
+const ErrorInfo = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    bottom: -99px;
+    width: 334px;
+    height: 38px;
+    margin: 0 auto;
+    background: rgba(0,0,0,0.46);
+    color: white;
+    z-index: 151;
+    cursor: pointer;
+`;
+
+class CreateUser extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -97,9 +113,29 @@ class Registration extends React.Component {
             repassword: '',
             clientId: '',
             approved: false,
-            info: null
+            info: null,
+            styleForm: null,
+            errorInfo: null
         }
 
+    }
+
+    componentDidMount() {
+        axios.get('http://84.201.129.203:8888/api/officers', {
+            headers: headers
+        })
+        .then(res => {
+            console.log(res);
+        })
+        .catch(err => {
+            console.log(err);
+            this.setState({
+                info: <ErrorInfo>
+                    <p>Вы не вошли в систему!</p>
+                </ErrorInfo>,
+                styleForm: 'none'
+            })
+        })
     }
 
     hideInfo() {
@@ -141,30 +177,30 @@ class Registration extends React.Component {
             lastName: this.state.lastName,
             password: this.state.password,
             repassword: this.state.repassword,
-            clientId: this.state.clientId
+            clientId: this.state.clientId,
+            approved: this.state.approved
         }
 
-        axios.post('http://84.201.129.203:8888/api/auth/sign_up', user)
-            .then(res => {
-                window.location.reload();
-                console.log(res);
-                this.setState({
-                    info: <Info onClick={this.hideInfo.bind(this)}>
-                        <p>Регистрация прошла успешно.</p>
-                    </Info>
-                })
+        axios.post('http://84.201.129.203:8888/api/officers', user, {
+            headers: headers
+        })
+        .then(res => {
+            window.location.reload();
+            console.log(res);
+            this.setState({
+                info: <Info onClick={this.hideInfo.bind(this)}>
+                    <p>Сотрудник создан</p>
+                </Info>
             })
-
-        console.log(user);
+        })
     }
 
     render() {
-
         return (
             <ContentConteyner>
-                <Form>
+                <Form style={{ display: this.state.styleForm }}>
                     <FormContent onSubmit={this.handleSubmit}>
-                        <h2 style={{ marginLeft: '22px' }}>Регистрация:</h2>
+                        <h2 style={{ marginLeft: '22px' }}>Добавить сотрудника:</h2>
                         <Input type='text' name='firstName' placeholder='Имя:' value={this.state.firstName} onChange={this.handleChange} />
                         <Input type='text' name='lastName' placeholder='Фамилия:' value={this.state.lastName} onChange={this.handleChange} />
                         <Input type='password' name='password' placeholder='Пароль:' value={this.state.password} onChange={this.handleChange} />
@@ -180,4 +216,4 @@ class Registration extends React.Component {
     }
 }
 
-export default Registration
+export default CreateUser
