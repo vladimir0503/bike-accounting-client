@@ -142,8 +142,7 @@ class BikePage extends React.Component {
             headers: headers
         })
             .then(res => {
-                console.log(res);
-
+            
                 let status;
                 let hideResolution;
                 let hideStatusSelect;
@@ -173,8 +172,6 @@ class BikePage extends React.Component {
                     updateAt: `Дата обновления: ${res.data.updateAt}`,
                     description: `Описание: ${res.data.description}`,
                     resolution: `Завершающий коментарий: ${res.data.resolution}`,
-                    // hideResolution: `${(res.data.status === 'done') ? null : 'none'}`,
-                    // hideStatusSelect: `${(res.data.status === 'new' || res.data.status === 'in_progress') ? null : 'none'}`
                     hideResolution: hideResolution,
                     hideStatusSelect: hideStatusSelect
                 });
@@ -186,7 +183,6 @@ class BikePage extends React.Component {
             .then(res => {
                 const userId = res.data;
                 this.setState({ userId });
-                console.log(this.state.userId)
             })
     }
 

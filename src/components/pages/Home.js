@@ -33,12 +33,20 @@ const ContentDiv = styled.div`
 `;
 
 const Home = ({ user }) => {
+
+    let name;
+    if(user === null) {
+        name = 'посетитель';
+    } else {
+        name = user;
+    }
+
     return (
         <ContentContayner>
             <ContentDiv>
                 <div style={{ width: '699px' }}>
                     <h2 style={{ margin: '0px' }}><span style={{ color: '#E3B873' }}>
-                        Добро пожаловать {user}!</span></h2>
+                        Добро пожаловать {name}!</span></h2>
                     <p>Вы находитесь на странице сервиса по учету украденных велосипедов.</p>
                     <p>К большому сожалению, участились случаи краж нашего имущества. По-этому наша компания
                     запустила систему учета краж наших велосипедов. Если у Вас есть что сообщить, пожалуйста
