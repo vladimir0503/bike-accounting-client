@@ -188,13 +188,13 @@ class BikePage extends React.Component {
             })
     }
 
-    handleChange(e) {
+    handleChange = (e) => {
         this.setState({
             inputValue: e.target.value,
         })
     }
 
-    editField(fieldName) {
+    editField = (fieldName) => {
 
         if (this.state.inputValue === '') {
             return;
@@ -206,8 +206,7 @@ class BikePage extends React.Component {
             headers: headers
         })
             .then(res => {
-                console.log(res)
-                this.setState({ inputValue: '' })
+                this.setState({ inputValue: '' });
             })
         this.props.updateBikeList();
     }
@@ -227,49 +226,49 @@ class BikePage extends React.Component {
                         <ExitBtn onClick={this.toHome.bind(this)}>х</ExitBtn>
                     </div>
                     <Field><FieldName>{this.state.status}</FieldName>
-                        <Select style={{ display: this.state.hideStatusSelect }} onChange={this.handleChange.bind(this)}>
+                        <Select style={{ display: this.state.hideStatusSelect }} onChange={this.handleChange}>
                             <Option value={'new'}>Новый</Option>
                             <Option value={'in_progress'}>В процессе выполнения</Option>
                             <Option value={'done'}>Завершен</Option>
                         </Select>
-                        <Btn style={{ display: this.state.hideStatusSelect }} onClick={this.editField.bind(this, { status: this.state.inputValue })}>Редактировать</Btn>
+                        <Btn style={{ display: this.state.hideStatusSelect }} onClick={() => this.editField({ status: this.state.inputValue })}>Редактировать</Btn>
                     </Field>
                     <Field><FieldName>{this.state.date}</FieldName>
-                        <Input type='date' onChange={this.handleChange.bind(this)} />
-                        <Btn onClick={this.editField.bind(this, { date: this.state.inputValue })}>Редактировать</Btn>
+                        <Input type='date' onChange={this.handleChange} />
+                        <Btn onClick={() => this.editField({ date: this.state.inputValue })}>Редактировать</Btn>
                     </Field>
                     <Field><FieldName>{this.state.licenseNumber}</FieldName>
-                        <Input type='text' placeholder='Введите данные для редактирования:' onChange={this.handleChange.bind(this)} />
-                        <Btn onClick={this.editField.bind(this, { licenseNumber: this.state.inputValue })}>Редактировать</Btn>
+                        <Input type='text' placeholder='Введите данные для редактирования:' onChange={this.handleChange} />
+                        <Btn onClick={() => this.editField({ licenseNumber: this.state.inputValue })}>Редактировать</Btn>
                     </Field>
                     <Field><FieldName>{this.state.color}</FieldName>
-                        <Input type='text' placeholder='Введите данные для редактирования:' onChange={this.handleChange.bind(this)} />
-                        <Btn onClick={this.editField.bind(this, { color: this.state.inputValue })}>Редактировать</Btn>
+                        <Input type='text' placeholder='Введите данные для редактирования:' onChange={this.handleChange} />
+                        <Btn onClick={() => this.editField({ color: this.state.inputValue })}>Редактировать</Btn>
                     </Field>
                     <Field><FieldName>{this.state.ownerFullName}</FieldName>
-                        <Input type='text' placeholder='Введите данные для редактирования:' onChange={this.handleChange.bind(this)} />
-                        <Btn onClick={this.editField.bind(this, { ownerFullName: this.state.inputValue })}>Редактировать</Btn>
+                        <Input type='text' placeholder='Введите данные для редактирования:' onChange={this.handleChange} />
+                        <Btn onClick={() => this.editField({ ownerFullName: this.state.inputValue })}>Редактировать</Btn>
                     </Field>
                     <Field><FieldName>{this.state.officer}</FieldName>
-                        <Select onChange={this.handleChange.bind(this)}>{this.state.userId.map(user => <Option key={user._id} value={user._id}>
+                        <Select onChange={this.handleChange}>{this.state.userId.map(user => <Option key={user._id} value={user._id}>
                             {user.firstName} {user.lastName}</Option>)}</Select>
-                        <Btn onClick={this.editField.bind(this, { officer: this.state.inputValue })}>Редактировать</Btn>
+                        <Btn onClick={() => this.editField({ officer: this.state.inputValue })}>Редактировать</Btn>
                     </Field>
                     <Field><FieldName>{this.state.createdAt}</FieldName>
-                        <Input type='datetime-local' onChange={this.handleChange.bind(this)} />
-                        <Btn onClick={this.editField.bind(this, { createdAt: this.state.inputValue })}>Редактировать</Btn>
+                        <Input type='datetime-local' onChange={this.handleChange} />
+                        <Btn onClick={() => this.editField({ createdAt: this.state.inputValue })}>Редактировать</Btn>
                     </Field>
                     <Field><FieldName>{this.state.updateAt}</FieldName>
-                        <Input type='datetime-local' onChange={this.handleChange.bind(this)} />
-                        <Btn onClick={this.editField.bind(this, { updateAt: this.state.inputValue })}>Редактировать</Btn>
+                        <Input type='datetime-local' onChange={this.handleChange} />
+                        <Btn onClick={() => this.editField({ updateAt: this.state.inputValue })}>Редактировать</Btn>
                     </Field>
                     <Field><FieldName>{this.state.description}</FieldName>
-                        <Input type='text' placeholder='Введите данные для редактирования:' onChange={this.handleChange.bind(this)} />
-                        <Btn onClick={this.editField.bind(this, { description: this.state.inputValue })}>Редактировать</Btn>
+                        <Input type='text' placeholder='Введите данные для редактирования:' onChange={this.handleChange} />
+                        <Btn onClick={() => this.editField({ description: this.state.inputValue })}>Редактировать</Btn>
                     </Field>
                     <Field style={{ display: this.state.hideResolution }}><FieldName>{this.state.resolution}</FieldName>
-                        <Input type='text' placeholder='Введите данные для редактирования:' onChange={this.handleChange.bind(this)} />
-                        <Btn onClick={this.editField.bind(this, { resolution: this.state.inputValue })}>Редактировать</Btn>
+                        <Input type='text' placeholder='Введите данные для редактирования:' onChange={this.handleChange} />
+                        <Btn onClick={() => this.editField({ resolution: this.state.inputValue })}>Редактировать</Btn>
                     </Field>
                 </BikeCard>
             </ContentConteyner>

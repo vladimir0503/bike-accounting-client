@@ -102,7 +102,7 @@ class Registration extends React.Component {
 
     }
 
-    hideInfo() {
+    hideInfo = () => {
         this.setState({ info: null });
     }
 
@@ -127,7 +127,7 @@ class Registration extends React.Component {
         for (let i = 0; i < formData.length; i++) {
             if (formData[i] === '') {
                 this.setState({
-                    info: <Info onClick={this.hideInfo.bind(this)}>
+                    info: <Info onClick={this.hideInfo}>
                         <p>Заполненны не все поля!</p>
                     </Info>
                 })
@@ -147,15 +147,12 @@ class Registration extends React.Component {
         axios.post('http://84.201.129.203:8888/api/auth/sign_up', user)
             .then(res => {
                 window.location.reload();
-                console.log(res);
                 this.setState({
                     info: <Info onClick={this.hideInfo.bind(this)}>
                         <p>Регистрация прошла успешно.</p>
                     </Info>
                 })
             })
-
-        console.log(user);
     }
 
     render() {

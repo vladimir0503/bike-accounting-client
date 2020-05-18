@@ -108,8 +108,6 @@ class EmployeePage extends React.Component {
             approved: '',
             inputValue: '',
         }
-
-        this.updateUser = this.updateUser.bind(this);
     }
 
     componentDidMount() {
@@ -129,13 +127,13 @@ class EmployeePage extends React.Component {
             })
     }
 
-    handleChange(e) {
+    handleChange = (e) => {
         this.setState({
             inputValue: e.target.value,
         })
     }
 
-    editField(fieldName) {
+    editField = (fieldName) => {
 
         if (this.state.inputValue === '') {
             return;
@@ -147,14 +145,13 @@ class EmployeePage extends React.Component {
             headers: headers
         })
             .then(res => {
-                console.log(res)
                 this.setState({ inputValue: '' })
             })
         this.updateUser();
         this.props.updateUserList();
     }
 
-    updateUser() {
+    updateUser = () => {
         axios.get(`http://84.201.129.203:8888/api/officers/${localStorage.getItem('userId')}`, {
             headers: headers
         })
@@ -168,7 +165,7 @@ class EmployeePage extends React.Component {
             })
     }
 
-    toHome() {
+    toHome = () => {
         this.props.updateUserList();
         window.history.back();
     }
@@ -179,19 +176,19 @@ class EmployeePage extends React.Component {
                 <EmployeeCard>
                     <div style={{display: 'flex'}}>
                         <Hover>Карточка сотрудника</Hover>
-                        <ExitBtn onClick={this.toHome.bind(this)}>х</ExitBtn>
+                        <ExitBtn onClick={this.toHome}>х</ExitBtn>
                     </div>
                     <Field><FieldName>{this.state.firstName}</FieldName>
-                        <Input type='text' placeholder='Введите данные для редактирования:' onChange={this.handleChange.bind(this)} />
-                        <Btn onClick={this.editField.bind(this, { firstName: this.state.inputValue })}>Редактировать</Btn>
+                        <Input type='text' placeholder='Введите данные для редактирования:' onChange={this.handleChange} />
+                        <Btn onClick={() => this.editField({ firstName: this.state.inputValue })}>Редактировать</Btn>
                     </Field>
                     <Field><FieldName>{this.state.lastName}</FieldName>
-                        <Input type='text' placeholder='Введите данные для редактирования:' onChange={this.handleChange.bind(this)} />
-                        <Btn onClick={this.editField.bind(this, { lastName: this.state.inputValue })}>Редактировать</Btn>
+                        <Input type='text' placeholder='Введите данные для редактирования:' onChange={this.handleChange} />
+                        <Btn onClick={() => this.editField(this, { lastName: this.state.inputValue })}>Редактировать</Btn>
                     </Field>
                     <Field><FieldName>{this.state.email}</FieldName>
-                        <Input type='text' placeholder='Введите данные для редактирования:' onChange={this.handleChange.bind(this)} />
-                        <Btn onClick={this.editField.bind(this, { email: this.state.inputValue })}>Редактировать</Btn>
+                        <Input type='text' placeholder='Введите данные для редактирования:' onChange={this.handleChange} />
+                        <Btn onClick={() => this.editField({ email: this.state.inputValue })}>Редактировать</Btn>
                     </Field>
                     <Field><FieldName>{this.state.approved}</FieldName></Field>
                 </EmployeeCard>

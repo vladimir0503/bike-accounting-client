@@ -125,10 +125,8 @@ class CreateUser extends React.Component {
             headers: headers
         })
         .then(res => {
-            console.log(res);
         })
         .catch(err => {
-            console.log(err);
             this.setState({
                 info: <ErrorInfo>
                     <p>Вы не вошли в систему!</p>
@@ -138,7 +136,7 @@ class CreateUser extends React.Component {
         })
     }
 
-    hideInfo() {
+    hideInfo = () => {
         this.setState({ info: null });
     }
 
@@ -163,7 +161,7 @@ class CreateUser extends React.Component {
         for (let i = 0; i < formData.length; i++) {
             if (formData[i] === '') {
                 this.setState({
-                    info: <Info onClick={this.hideInfo.bind(this)}>
+                    info: <Info onClick={this.hideInfo}>
                         <p>Заполненны не все поля!</p>
                     </Info>
                 })
@@ -186,7 +184,6 @@ class CreateUser extends React.Component {
         })
         .then(res => {
             window.location.reload();
-            console.log(res);
             this.setState({
                 info: <Info onClick={this.hideInfo.bind(this)}>
                     <p>Сотрудник создан</p>

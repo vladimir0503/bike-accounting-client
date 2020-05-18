@@ -108,11 +108,9 @@ class Employees extends React.Component {
             approved: null,
             userId: null
         }
-
-        this.updateUserList = this.updateUserList.bind(this);
     }
 
-    hideInfo() {
+    hideInfo = () => {
         this.setState({ info: null });
     }
 
@@ -123,12 +121,10 @@ class Employees extends React.Component {
             .then(res => {
                 const employess = res.data;
                 this.setState({ employess });
-                console.log(employess);
             })
             .catch(err => {
-                console.log(err);
                 this.setState({
-                    info: <Info onClick={this.hideInfo.bind(this)}>
+                    info: <Info onClick={this.hideInfo}>
                         <p>Вы не вошли в систему!</p>
                     </Info>,
                     listStyle: 'none'
@@ -136,18 +132,17 @@ class Employees extends React.Component {
             })
     }
 
-    userDelete(id, index) {
+    userDelete = (id, index) => {
         axios.delete(`http://84.201.129.203:8888/api/officers/${id}`, {
             headers: headers
         })
             .then(res => {
-                console.log(res);
                 const newArr = this.state.employess.splice(index, 1);
                 this.setState({ newArr });
             })
     }
 
-    userApprove(id) {
+    userApprove = (id) => {
 
         const data = { approved: this.state.toApprove }
 
@@ -155,26 +150,23 @@ class Employees extends React.Component {
             headers: headers
         })
         .then(res => {
-            console.log(res);
             this.updateUserList();
         });
 
     }
 
-    updateUserList() {
+    updateUserList = () => {
         axios.get('http://84.201.129.203:8888/api/officers', {
             headers: headers
         })
             .then(res => {
                 const employess = res.data;
                 this.setState({ employess });
-                console.log(employess);
             })
     }
 
     getUserId(id) {
         this.setState({ userId: id })
-        console.log(this.state.userId)
     }
 
     render() {
@@ -193,8 +185,8 @@ class Employees extends React.Component {
                         <Hover>Ответственные сотрудники:</Hover>
                         {this.state.employess.map((data, index) => <User><Link style={{ color: 'inherit', textDecoration: 'none' }} onClick={this.getUserId.bind(this, data._id)}
                             to='/employeePage'><ListElem>{data.firstName} {data.lastName} {data.approved ? ' (одобрен)' : ' (не одобрен)'}</ListElem></Link>
-                            {data.approved ? null : <Btn onClick={this.userApprove.bind(this, data._id)}>Одобрить</Btn>}
-                            <Btn onClick={this.userDelete.bind(this, data._id, index)}>Удалить сотрудника</Btn></User>)}
+                            {data.approved ? null : <Btn onClick={() => this.userApprove(data._id)}>Одобрить</Btn>}
+                            <Btn onClick={() => this.userDelete(data._id, index)}>Удалить сотрудника</Btn></User>)}
                     </UserList>
                 </ContentContayner>
             </Router>

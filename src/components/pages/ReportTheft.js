@@ -108,7 +108,7 @@ class ReportTheft extends React.Component {
         };
     }
 
-    hideInfo() {
+    hideInfo = () => {
         this.setState({ info: null });
     }
 
@@ -132,7 +132,7 @@ class ReportTheft extends React.Component {
         for (let i = 0; i < formData.length; i++) {
             if (formData[i] === '') {
                 this.setState({
-                    info: <Info onClick={this.hideInfo.bind(this)}>
+                    info: <Info onClick={this.hideInfo}>
                         <p>Заполненны не все поля!</p>
                     </Info>
                 })
@@ -148,9 +148,8 @@ class ReportTheft extends React.Component {
             clientId: this.state.clientId
         })
             .then(res => {
-                console.log(res);
                 this.setState({
-                    info: <Info onClick={this.hideInfo.bind(this)}>
+                    info: <Info onClick={this.hideInfo}>
                         <p>Сообщение отправленно.</p>
                     </Info>
                 })

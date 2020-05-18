@@ -132,7 +132,7 @@ class NewCase extends React.Component {
             .catch(err => {
                 console.log(err);
                 this.setState({
-                    info: <ErrorInfo onClick={this.hideInfo.bind(this)}>
+                    info: <ErrorInfo onClick={this.hideInfo}>
                         <p>Вы не вошли в систему!</p>
                     </ErrorInfo>,
                     styleForm: 'none'
@@ -140,7 +140,7 @@ class NewCase extends React.Component {
             })
     }
 
-    hideInfo() {
+    hideInfo = () => {
         this.setState({ info: null });
     }
 

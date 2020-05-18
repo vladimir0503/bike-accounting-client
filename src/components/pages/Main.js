@@ -162,12 +162,9 @@ class Main extends React.Component {
             user: localStorage.getItem('user'),
         }
 
-        this.handleClickMenu = this.handleClickMenu.bind(this);
-        this.OnSubMenu = this.OnSubMenu.bind(this);
-        this.styleEnterBtn = this.styleEnterBtn.bind(this);
     }
 
-    handleClickMenu() {
+    handleClickMenu = () => {
 
         if (this.state.menuInit === false) {
             this.setState({
@@ -194,26 +191,7 @@ class Main extends React.Component {
 
     }
 
-    hideMenu() {
-        this.setState({
-            menuPosition: '-100%',
-            transformBar1: null,
-            transformBar3: null,
-            opacityBar2: null,
-            barColor: null,
-            wrapper: null,
-        })
-    }
-
-    menuInitFalse() {
-        this.setState({ menuInit: false })
-    }
-
-    menuInitTrue() {
-        this.setState({ menuInit: true })
-    }
-
-    OnSubMenu() {
+    OnSubMenu = () => {
         if (this.state.submenuinit === false) {
             this.setState({
                 submenuPosition: '100%',
@@ -228,12 +206,12 @@ class Main extends React.Component {
         }
     }
 
-    loginOut() {
+    loginOut = () => {
         localStorage.removeItem('myToken');
         this.styleEnterBtn();
     }
 
-    styleEnterBtn() {
+    styleEnterBtn = () => {
         let token = localStorage.getItem('myToken');
         if(token === null) {
             localStorage.removeItem('user');
@@ -246,14 +224,8 @@ class Main extends React.Component {
         window.location.reload();
     }
 
-    testToken() {
-        console.log('hideEnter', this.state.hideEnter);
-        console.log('hideExit', this.state.hideExit);
-        console.log(localStorage.getItem('myToken'));
-    }
-
     render() {
-        
+
         return (
             <Router>
                 <Route path='/' render={() => <Home user={this.state.user}/>} />
@@ -267,7 +239,7 @@ class Main extends React.Component {
                 <Header>
                     <HeaderContent>
                         <LabelDiv>
-                            <MenuButton onClick={this.handleClickMenu.bind(this)}>
+                            <MenuButton onClick={this.handleClickMenu}>
                                 <Bar style={{ transform: this.state.transformBar1, backgroundColor: this.state.barColor }} />
                                 <Bar style={{ opacity: this.state.opacityBar2, backgroundColor: this.state.barColor }} />
                                 <Bar style={{ transform: this.state.transformBar3, backgroundColor: this.state.barColor }} />
@@ -276,24 +248,24 @@ class Main extends React.Component {
                         </LabelDiv>
                         <LinkDiv>
                             <NavBarElem style={{display: this.state.hideEnter }}><Link to='/autorization' style={{ color: 'inherit', textDecoration: 'none' }}>Войти</Link></NavBarElem>
-                            <NavBarElem style={{display: this.state.hideExit }} onClick={this.loginOut.bind(this)}>Выйти</NavBarElem>
+                            <NavBarElem style={{display: this.state.hideExit }} onClick={this.loginOut}>Выйти</NavBarElem>
                             <NavBarElem><Link to='/registration' style={{ color: 'inherit', textDecoration: 'none' }}>Зарегистрироваться</Link></NavBarElem>
                         </LinkDiv>
                     </HeaderContent>
                 </Header>
                 <Menu style={{ transform: `translateX(${this.state.menuPosition})` }}>
                     <NavBar>
-                        <NavBarElem onClick={this.handleClickMenu.bind(this)}><Link to='/' style={{ color: 'inherit', textDecoration: 'none' }}>Главная</Link></NavBarElem>
-                        <NavBarElem onClick={this.OnSubMenu.bind(this)}>Админка</NavBarElem>
-                        <NavBarElem onClick={this.handleClickMenu.bind(this)}><Link to='/reportTheft' style={{ color: 'inherit', textDecoration: 'none' }}>Сообщить о краже</Link></NavBarElem>
+                        <NavBarElem onClick={this.handleClickMenu}><Link to='/' style={{ color: 'inherit', textDecoration: 'none' }}>Главная</Link></NavBarElem>
+                        <NavBarElem onClick={this.OnSubMenu}>Админка</NavBarElem>
+                        <NavBarElem onClick={this.handleClickMenu}><Link to='/reportTheft' style={{ color: 'inherit', textDecoration: 'none' }}>Сообщить о краже</Link></NavBarElem>
                     </NavBar>
                 </Menu>
                 <SubMenu style={{ transform: `translateX(${this.state.submenuPosition})` }}>
                     <NavBar style={{ fontSize: '20px' }}>
-                        <NavBarElem onClick={this.OnSubMenu.bind(this)}><Link to='/createUser' style={{ color: 'inherit', textDecoration: 'none' }}>Добавить сотрудника</Link></NavBarElem>
-                        <NavBarElem onClick={this.OnSubMenu.bind(this)}><Link to='/newCase' style={{ color: 'inherit', textDecoration: 'none' }}>Новый случай</Link></NavBarElem>
-                        <NavBarElem onClick={this.OnSubMenu.bind(this)}><Link to='/stolenBikes' style={{ color: 'inherit', textDecoration: 'none' }}>Украденные велосипеды</Link></NavBarElem>
-                        <NavBarElem onClick={this.OnSubMenu.bind(this)}><Link to='/employess' style={{ color: 'inherit', textDecoration: 'none' }}>Ответственные сотрудники</Link></NavBarElem>
+                        <NavBarElem onClick={this.OnSubMenu}><Link to='/createUser' style={{ color: 'inherit', textDecoration: 'none' }}>Добавить сотрудника</Link></NavBarElem>
+                        <NavBarElem onClick={this.OnSubMenu}><Link to='/newCase' style={{ color: 'inherit', textDecoration: 'none' }}>Новый случай</Link></NavBarElem>
+                        <NavBarElem onClick={this.OnSubMenu}><Link to='/stolenBikes' style={{ color: 'inherit', textDecoration: 'none' }}>Украденные велосипеды</Link></NavBarElem>
+                        <NavBarElem onClick={this.OnSubMenu}><Link to='/employess' style={{ color: 'inherit', textDecoration: 'none' }}>Ответственные сотрудники</Link></NavBarElem>
                     </NavBar>
                 </SubMenu>
             </Router>

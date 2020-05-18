@@ -113,11 +113,9 @@ class StolenBikes extends React.Component {
             info: null,
             bikeId: null
         }
-
-        this.updateBikeList = this.updateBikeList.bind(this);
     }
 
-    hideInfo() {
+    hideInfo = () => {
         this.setState({ info: null });
     }
 
@@ -128,12 +126,10 @@ class StolenBikes extends React.Component {
             .then(res => {
                 const stolenBikes = res.data;
                 this.setState({ stolenBikes })
-                console.log(res.data);
             })
             .catch(err => {
-                console.log(err);
                 this.setState({
-                    info: <Info onClick={this.hideInfo.bind(this)}>
+                    info: <Info onClick={this.hideInfo}>
                         <p>Вы не вошли в систему!</p>
                     </Info>,
                     listStyle: 'none'
@@ -141,29 +137,27 @@ class StolenBikes extends React.Component {
             })
     }
 
-    bikeDelete(id, index) {
+    bikeDelete = (id, index) => {
         axios.delete(`http://84.201.129.203:8888/api/cases/${id}`, {
             headers: headers
         })
             .then(res => {
-                console.log(res);
                 const newArr = this.state.stolenBikes.splice(index, 1);
                 this.setState({ newArr });
             })
     }
 
-    updateBikeList() {
+    updateBikeList = () => {
         axios.get('http://84.201.129.203:8888/api/cases', {
             headers: headers
         })
             .then(res => {
                 const stolenBikes = res.data;
                 this.setState({ stolenBikes })
-                console.log(res.data);
             })
     }
 
-    getBikeId(id) {
+    getBikeId = (id) => {
         this.setState({ bikeId: id });
     }
 
@@ -180,13 +174,13 @@ class StolenBikes extends React.Component {
                     <UserList style={{ display: this.state.listStyle }}>
                         <Hover>Украденные велосипеды:</Hover>
                         {this.state.stolenBikes.map((data, index) => <Ul><Li>
-                            <Link style={{ color: 'inherit', textDecoration: 'none' }} onClick={this.getBikeId.bind(this, data._id)} to='/bikePage'>
+                            <Link style={{ color: 'inherit', textDecoration: 'none' }} onClick={() => this.getBikeId(data._id)} to='/bikePage'>
                                 <ListElem><DataItem>{`Цвет: ${data.color}`}</DataItem>
                                     <DataItem>{`Имя владельца: ${data.ownerFullName}`}</DataItem>
                                     <DataItem>{`Номер лицензии: ${data.licenseNumber}`}</DataItem>
                                     <DataItem>{`Статус: ${(data.status === 'new') ? 'Новый' : (data.status === 'in_progress') ?
                                         'В процессе выполнения' : 'Завершен'}`}</DataItem></ListElem></Link>
-                            <Btn onClick={this.bikeDelete.bind(this, data._id, index)}>Удалить сообщение</Btn></Li></Ul>)}
+                            <Btn onClick={() => this.bikeDelete(data._id, index)}>Удалить сообщение</Btn></Li></Ul>)}
                     </UserList>
                 </ContentConteyner>
             </Router>

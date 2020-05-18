@@ -94,7 +94,7 @@ class Autorization extends React.Component {
         }
     }
 
-    hideInfo() {
+    hideInfo = () => {
         this.setState({ info: null });
     }
 
@@ -115,7 +115,7 @@ class Autorization extends React.Component {
         for (let i = 0; i < formData.length; i++) {
             if (formData[i] === '') {
                 this.setState({
-                    info: <Info onClick={this.hideInfo.bind(this)}>
+                    info: <Info onClick={this.hideInfo}>
                         <p>Заполненны не все поля!</p>
                     </Info>
                 })
@@ -128,9 +128,8 @@ class Autorization extends React.Component {
             password: this.state.password
         })
             .then(res => {
-                console.log(res);
                 this.setState({
-                    info: <Info onClick={this.hideInfo.bind(this)}>
+                    info: <Info onClick={this.hideInfo}>
                         <p>Вы успешно авторизованны.</p>
                     </Info>
                 });
@@ -145,7 +144,7 @@ class Autorization extends React.Component {
                 const error = err.message;
                 if(error) {
                     this.setState({
-                        info: <Info onClick={this.hideInfo.bind(this)}>
+                        info: <Info onClick={this.hideInfo}>
                             <p>Учетные данные не верны!</p>
                         </Info>
                     });
