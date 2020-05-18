@@ -253,26 +253,17 @@ class Main extends React.Component {
     }
 
     render() {
-
-        const HomePages = () => <Home user={this.state.user}/>;
-        const RegistPage = () => <Registration />;
-        const AutorPage = () => <Autorization styleEnterBtn={this.styleEnterBtn}/>;
-        const ReportTheftPage = () => <ReportTheft />;
-        const EmployessPage = () => <Employees />;
-        const StolenPage = () => <StolenBikes />;
-        const NewCasePage = () => <NewCase />;
-        const CreateUserPage = () => <CreateUser />;
-
+        
         return (
             <Router>
-                <Route path='/' component={HomePages} />
-                <Route path='/registration' component={RegistPage} />
-                <Route path='/autorization' component={AutorPage} />
-                <Route path='/reportTheft' component={ReportTheftPage} />
-                <Route path='/employess' component={EmployessPage} />
-                <Route path='/stolenBikes' component={StolenPage} />
-                <Route path='/newCase' component={NewCasePage} />
-                <Route path='/createUser' component={CreateUserPage} />
+                <Route path='/' render={() => <Home user={this.state.user}/>} />
+                <Route path='/registration' component={Registration} />
+                <Route path='/autorization' render={() => <Autorization styleEnterBtn={this.styleEnterBtn}/>} />
+                <Route path='/reportTheft' component={ReportTheft} />
+                <Route path='/employess' component={Employees} />
+                <Route path='/stolenBikes' component={StolenBikes} />
+                <Route path='/newCase' component={NewCase} />
+                <Route path='/createUser' component={CreateUser} />
                 <Header>
                     <HeaderContent>
                         <LabelDiv>

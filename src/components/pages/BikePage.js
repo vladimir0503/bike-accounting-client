@@ -115,7 +115,6 @@ class BikePage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            bikeId: this.props.bikeId,
             status: '',
             date: '',
             licenseNumber: '',
@@ -136,27 +135,30 @@ class BikePage extends React.Component {
 
     componentDidMount() {
 
-        localStorage.setItem('bikeId', this.state.bikeId);
+        localStorage.setItem('bikeId', this.props.bikeId);
 
         axios.get(`http://84.201.129.203:8888/api/cases/${localStorage.getItem('bikeId')}`, {
             headers: headers
         })
             .then(res => {
-            
-                let status;
-                let hideResolution;
-                let hideStatusSelect;
+
+                const statusMapper = {
+                    new: 'Новый',
+                    in_progress: 'В процессе выполнения',
+                    done: 'Завершен',
+                };
+
+                const status = statusMapper[res.data.status];
+                let hideResolution = 'none';
+                let hideStatusSelect = null;
 
                 if(res.data.status === 'new') {
-                    status = 'Новый';
                     hideResolution = 'none';
                     hideStatusSelect = null;
                 }else if (res.data.status === 'in_progress') {
-                    status = 'В процессе выполнения';
                     hideResolution = 'none';
                     hideStatusSelect = null;
                 } else {
-                    status = 'Завершен';
                     hideResolution = null;
                     hideStatusSelect = 'none';
                 }
