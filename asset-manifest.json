@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "/bike-accounting-client/static/css/main.69eda509.chunk.css",
+    "main.js": "/bike-accounting-client/static/js/main.481d2617.chunk.js",
+    "main.js.map": "/bike-accounting-client/static/js/main.481d2617.chunk.js.map",
+    "runtime-main.js": "/bike-accounting-client/static/js/runtime-main.6e4e8fc9.js",
+    "runtime-main.js.map": "/bike-accounting-client/static/js/runtime-main.6e4e8fc9.js.map",
+    "static/js/2.d43fc310.chunk.js": "/bike-accounting-client/static/js/2.d43fc310.chunk.js",
+    "static/js/2.d43fc310.chunk.js.map": "/bike-accounting-client/static/js/2.d43fc310.chunk.js.map",
+    "index.html": "/bike-accounting-client/index.html",
+    "precache-manifest.646e0e320f4ea300aaf450edb5dce969.js": "/bike-accounting-client/precache-manifest.646e0e320f4ea300aaf450edb5dce969.js",
+    "service-worker.js": "/bike-accounting-client/service-worker.js",
+    "static/css/main.69eda509.chunk.css.map": "/bike-accounting-client/static/css/main.69eda509.chunk.css.map",
+    "static/js/2.d43fc310.chunk.js.LICENSE.txt": "/bike-accounting-client/static/js/2.d43fc310.chunk.js.LICENSE.txt",
+    "static/media/RegImg.jpg": "/bike-accounting-client/static/media/RegImg.158be718.jpg",
+    "static/media/employess.jpg": "/bike-accounting-client/static/media/employess.86f96adc.jpg",
+    "static/media/home.jpg": "/bike-accounting-client/static/media/home.5c8c27cd.jpg",
+    "static/media/stolen.jpg": "/bike-accounting-client/static/media/stolen.560fe786.jpg",
+    "static/media/theftImg.jpg": "/bike-accounting-client/static/media/theftImg.036b18c1.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.6e4e8fc9.js",
+    "static/js/2.d43fc310.chunk.js",
+    "static/css/main.69eda509.chunk.css",
+    "static/js/main.481d2617.chunk.js"
+  ]
+}
